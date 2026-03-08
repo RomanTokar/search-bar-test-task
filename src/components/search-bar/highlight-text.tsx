@@ -9,7 +9,7 @@ export function HighlightText({ text, query }: HighlightTextProps) {
   }
 
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`(${escaped})`, "gi");
+  const regex = new RegExp(`(${escaped})`, "i");
   const parts = text.split(regex);
 
   return (

@@ -21,11 +21,6 @@ export function SearchBar() {
   const showRecent = isOpen && query.trim().length === 0;
   const dropdownVisible = showSuggestions || showRecent;
 
-  // Reset active index when suggestions change
-  useEffect(() => {
-    setActiveIndex(-1);
-  }, [suggestions]);
-
   // Close on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -36,7 +31,7 @@ export function SearchBar() {
         setIsOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside, { passive: true });
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
@@ -98,18 +93,18 @@ export function SearchBar() {
         onChange={(v) => {
           setQuery(v);
           setIsOpen(true);
+          setActiveIndex(-1);
         }}
         onFocus={() => setIsOpen(true)}
         onKeyDown={handleKeyDown}
         isOpen={dropdownVisible}
-        activeIndex={activeIndex}
         listId={listId}
         activeSuggestionId={activeSuggestionId}
       />
 
-      {dropdownVisible && (
+      {dropdownVisible ? (
         <div className="absolute top-full left-0 right-0 mt-1.5 z-50 overflow-hidden bg-white border border-cream-200 shadow-lg rounded-xl">
-          {showSuggestions && (
+          {showSuggestions ? (
             <SuggestionsList
               products={suggestions}
               query={query}
@@ -118,8 +113,8 @@ export function SearchBar() {
               onSelect={selectItem}
               onMouseEnter={setActiveIndex}
             />
-          )}
-          {showRecent && (
+          ) : null}
+          {showRecent ? (
             <RecentSearches
               searches={searches}
               onSelect={(term) => {
@@ -128,9 +123,9 @@ export function SearchBar() {
                 setIsOpen(true);
               }}
             />
-          )}
+          ) : null}
         </div>
-      )}
+      ) : null}
 
       {/* Accessible live region */}
       <div

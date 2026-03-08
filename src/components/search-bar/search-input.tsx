@@ -8,7 +8,6 @@ interface SearchInputProps {
   onFocus: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   isOpen: boolean;
-  activeIndex: number;
   listId: string;
   activeSuggestionId: string | undefined;
 }

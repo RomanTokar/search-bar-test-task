@@ -1,19 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MAX_RECENT_SEARCHES, RECENT_SEARCHES_KEY } from "@/lib/constants";
 
 export function useRecentSearches() {
-  const [searches, setSearches] = useState<string[]>([]);
-
-  useEffect(() => {
+  const [searches, setSearches] = useState<string[]>(() => {
     try {
       const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
-      if (stored) setSearches(JSON.parse(stored));
+      return stored ? JSON.parse(stored) : [];
     } catch {
-      // ignore
+      return [];
     }
-  }, []);
+  });
 
   function addSearch(term: string) {
     const trimmed = term.trim();
