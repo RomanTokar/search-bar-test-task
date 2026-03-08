@@ -5,6 +5,18 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Cream color scale */
+  --color-cream-50: oklch(0.99 0.012 85);
+  --color-cream-100: oklch(0.97 0.018 80);
+  --color-cream-200: oklch(0.93 0.028 78);
+  --color-cream-300: oklch(0.87 0.040 76);
+  --color-cream-400: oklch(0.72 0.055 70);
+  --color-cream-500: oklch(0.60 0.060 68);
+  --color-cream-600: oklch(0.50 0.060 65);
+  --color-cream-700: oklch(0.40 0.055 63);
+  --color-cream-800: oklch(0.30 0.045 60);
+  --color-cream-900: oklch(0.20 0.035 58);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
@@ -48,7 +60,7 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
+  --background: oklch(0.99 0.012 85);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
