@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { MAX_RECENT_SEARCHES, RECENT_SEARCHES_KEY } from "@/lib/constants";
+import { Product } from "@/types/search";
 
 export function useRecentSearches() {
-  const [searches, setSearches] = useState<string[]>(() => {
+  const [searches, setSearches] = useState<Product[]>(() => {
     try {
       const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
       return stored ? JSON.parse(stored) : [];
@@ -13,12 +14,9 @@ export function useRecentSearches() {
     }
   });
 
-  function addSearch(term: string) {
-    const trimmed = term.trim();
-    if (!trimmed) return;
-
+  function addSearch(product: Product) {
     setSearches((prev) => {
-      const deduped = [trimmed, ...prev.filter((s) => s !== trimmed)].slice(
+      const deduped = [product, ...prev.filter((p) => p.id !== product.id)].slice(
         0,
         MAX_RECENT_SEARCHES
       );

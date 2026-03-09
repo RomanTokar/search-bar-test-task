@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef, useState, useEffect, useId, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useSearch } from "@/hooks/use-search";
 import { useRecentSearches } from "@/hooks/use-recent-searches";
+import { Product } from "@/types/search";
 import { SearchInput } from "./search-input";
 import { SuggestionsList } from "./suggestions-list";
 import { RecentSearches } from "./recent-searches";
@@ -14,7 +16,8 @@ export function SearchBar() {
   const containerRef = useRef<HTMLDivElement>(null);
   const listId = useId();
 
-  const { suggestions } = useSearch(query);
+  const router = useRouter();
+  const { suggestions, isLoading } = useSearch(query);
   const { searches, addSearch } = useRecentSearches();
 
   const showSuggestions = isOpen && query.trim().length > 0;
@@ -36,13 +39,13 @@ export function SearchBar() {
   }, []);
 
   const selectItem = useCallback(
-    (term: string) => {
-      setQuery(term);
-      addSearch(term);
+    (product: Product) => {
+      addSearch(product);
       setIsOpen(false);
       setActiveIndex(-1);
+      router.push(`/products/${product.id}`);
     },
-    [addSearch]
+    [addSearch, router]
   );
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -66,9 +69,8 @@ export function SearchBar() {
       case "Enter":
         e.preventDefault();
         if (showSuggestions && activeIndex >= 0 && suggestions[activeIndex]) {
-          selectItem(suggestions[activeIndex].name);
-        } else if (query.trim()) {
-          addSearch(query.trim());
+          selectItem(suggestions[activeIndex]);
+        } else {
           setIsOpen(false);
         }
         break;
@@ -110,6 +112,7 @@ export function SearchBar() {
               query={query}
               activeIndex={activeIndex}
               listId={listId}
+              isLoading={isLoading}
               onSelect={selectItem}
               onMouseEnter={setActiveIndex}
             />
@@ -117,10 +120,9 @@ export function SearchBar() {
           {showRecent ? (
             <RecentSearches
               searches={searches}
-              onSelect={(term) => {
-                setQuery(term);
-                addSearch(term);
-                setIsOpen(true);
+              onSelect={(product) => {
+                setIsOpen(false);
+                router.push(`/products/${product.id}`);
               }}
             />
           ) : null}

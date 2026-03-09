@@ -7,7 +7,7 @@ interface SuggestionItemProps {
   query: string;
   isActive: boolean;
   index: number;
-  onSelect: (name: string) => void;
+  onSelect: (product: Product) => void;
   onMouseEnter: (index: number) => void;
 }
 
@@ -24,12 +24,12 @@ export function SuggestionItem({
       id={`suggestion-${product.id}`}
       role="option"
       aria-selected={isActive}
-      className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors ${
+      className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors border-b border-gray-200 last:border-b-0 ${
         isActive ? "bg-cream-100" : "hover:bg-cream-50"
       }`}
       onMouseDown={(e) => {
         e.preventDefault();
-        onSelect(product.name);
+        onSelect(product);
       }}
       onMouseEnter={() => onMouseEnter(index)}
     >
@@ -37,7 +37,6 @@ export function SuggestionItem({
       <span className="text-sm">
         <HighlightText text={product.name} query={query} />
       </span>
-      <span className="ml-auto text-xs text-cream-400">{product.category}</span>
     </li>
   );
 }

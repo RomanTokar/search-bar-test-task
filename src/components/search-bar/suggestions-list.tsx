@@ -6,7 +6,8 @@ interface SuggestionsListProps {
   query: string;
   activeIndex: number;
   listId: string;
-  onSelect: (name: string) => void;
+  isLoading: boolean;
+  onSelect: (product: Product) => void;
   onMouseEnter: (index: number) => void;
 }
 
@@ -15,9 +16,11 @@ export function SuggestionsList({
   query,
   activeIndex,
   listId,
+  isLoading,
   onSelect,
   onMouseEnter,
 }: SuggestionsListProps) {
+  if (isLoading) return null;
   if (products.length === 0) {
     return (
       <div className="px-4 py-6 text-center text-sm text-cream-400">

@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
+import { Product } from "@/types/search";
 
 interface RecentSearchesProps {
-  searches: string[];
-  onSelect: (term: string) => void;
+  searches: Product[];
+  onSelect: (product: Product) => void;
 }
 
 export function RecentSearches({ searches, onSelect }: RecentSearchesProps) {
@@ -16,21 +17,22 @@ export function RecentSearches({ searches, onSelect }: RecentSearchesProps) {
 
   return (
     <div className="px-4 py-3">
-      <p className="text-xs font-medium text-cream-500 mb-2 uppercase tracking-wide">
+      <p className="text-sm font-medium text-cream-500 mb-2">
         Recent Searches
       </p>
       <div className="flex flex-wrap gap-2">
-        {searches.map((term) => (
+        {searches.map((product) => (
           <Badge
-            key={term}
+            key={product.id}
             variant="secondary"
             className="bg-cream-200 text-cream-700 hover:bg-cream-300 rounded-full cursor-pointer border-0 font-normal"
             onMouseDown={(e) => {
               e.preventDefault();
-              onSelect(term);
+              e.stopPropagation();
+              onSelect(product);
             }}
           >
-            {term}
+            {product.name}
           </Badge>
         ))}
       </div>

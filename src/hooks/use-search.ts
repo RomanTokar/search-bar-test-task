@@ -23,9 +23,11 @@ export function useSearch(query: string) {
     { keepPreviousData: true, revalidateOnFocus: false }
   );
 
+  const isDebouncing = query.trim().length >= MIN_QUERY_LENGTH && query !== debounced;
+
   return {
     suggestions: data?.products ?? [],
-    isLoading: shouldFetch && isLoading,
+    isLoading: isDebouncing || (shouldFetch && isLoading),
     error,
   };
 }
